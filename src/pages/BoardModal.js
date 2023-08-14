@@ -3,28 +3,31 @@ import Modal from 'react-modal';
 import '../pages_css/BoardModal.css';
 import axios from 'axios';
 
-const BoardModal = (data) => {
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
-    const [writer, setWriter] = useState('');
+const BoardModal = ( data ) => {
+    const [inputs, setInputs] =useState({
+        title: '',
+        content: '',
+        writer: '',
+    });
 
+    // insert 값 검증
     const insertBoardValueCheck = () => {
-        if (title === '') {
+        if ( inputs.title === '') {
             alert('Please input title');
             return false;
         }
-        if (content === '') {
+        if ( inputs.content === '') {
             alert('Please input content');
             return false;
         }
-        if (writer === '') {
+        if ( inputs.writer === '') {
             alert('Please input writer');
             return false;
         }
         return true;
     };
 
-    // 게시글 등록
+    //게시글 등록
     const insertBoard = async () => {
         console.log('insertBoard');
         if (!insertBoardValueCheck()) return;
@@ -35,44 +38,61 @@ const BoardModal = (data) => {
         };
 
         const datas = {
-            board_seq: null,
-            board_title: title,
-            board_content: content,
-            board_writer: writer,
+            board_title: inputs.title,
+            board_content: inputs.content,
+            board_writer: inputs.writer,
         };
 
         axios
-            .post('http://127.0.0.1:8000/insertBoard/', datas, { headers })
-            .then((response) => {
-                if (response.data.response_code) {
-                    data.setModalIsOpen(false);
-                } else {
-                    alert(response.data.message);
-                }
-            })
-            .catch((response) => {
+        .post('http://127.0.0.1:8000/insertBoard/', datas, {
+            headers,
+        })
+        .then((response) => {
+            if ( response.data.response_code) {
+                modalClose();
+            } else {
                 alert(response.data.message);
-            });
+            }
+        })
+        .catch((response) => {
+            alert(response.data.message);
+        });
     };
+
+    // 모달 닫기
+    const modalClose = () => {
+        resetInput();
+        data.modalSuccessAndClosing(false);
+    };
+    
+    // 값 리셋
+    const resetInput = () => {
+        setInputs({
+            title: '',
+            content: '',
+            writer: '',
+        });
+    };
+
 
     return (
         <Modal className="modal" isOpen={data.modal_is_open} ariaHideApp={false}>
             <div style={{ height: '100%' }}>
-                <h1 className="sectionTitle">Write</h1>
-                <div style={{ paddingLeft: '4%', paddingRight: '4%' }}>
-                    <h1 style={{ fontSize: 28, fontWeight: 'bold' }}>Title</h1>
-                    <input className="inputs" onChange={(e) => setTitle(e.target.value)} />
-                    <h1 style={{ fontSize: 28, fontWeight: 'bold', marginTop: 10 }}>Content</h1>
+                <div style={{ paddingTop: '4%', paddingLeft: '4%', paddingRight: '4%' }}>
+                    <h1 style={{ fontSize: 28, fontWeight: 'bold' }}>제목</h1>
+                    <input className="inputs" value={inputs.title} onChange={(e) => setInputs({...inputs, title: e.target.value})}/>
+                    <h1 style={{ fontSize: 28, fontWeight: 'bold' }}>내용</h1>
                     <textarea
-                        rows={4}
+                        rows={5}
                         className="inputs"
-                        onChange={(e) => setContent(e.target.value)}
+                        value={inputs.content}
+                        onChange={(e) => setInputs({ ...inputs, content: e.target.value})}
                         style={{ resize: 'none' }}
                     />
                     <div className="buttonDiv">
                         <input
-                            placeholder="writer"
-                            onChange={(e) => setWriter(e.target.value)}
+                            placeholder="작성자"
+                            onChange={(e) => setInputs({ ...inputs, writer: e.target.value})}
                             style={{
                                 padding: 6,
                                 width: 200,
@@ -82,17 +102,23 @@ const BoardModal = (data) => {
                                 borderRadius: 4,
                             }}
                         />
-                        <button className="goodButton" onClick={insertBoard}>
-                            SAVE
+                        <button className="goodButton" onClick={() => insertBoard()}>
+                            저장
                         </button>
                         <button className="badButton" onClick={() => data.setModalIsOpen(false)}>
-                            CLOSE
+                            닫기
                         </button>
                     </div>
                 </div>
             </div>
         </Modal>
     );
+
+
+
+
+
+
 };
 
 export default BoardModal;

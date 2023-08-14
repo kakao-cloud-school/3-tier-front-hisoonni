@@ -2,22 +2,48 @@
     padding: 60px;
 }
 
+th {
+    color: white;
+    background-color: #FEE500;
+}
+
+td {
+    color: black;
+    background-color: white;
+    vertical-align: middle;
+    height: 20px;
+}
+
+
 .sectionTitle {
     font-size: 62px;
     font-weight: bold;
     padding: 30px;
 }
 
+
+table {
+    width: 100%;
+    text-align: center;
+}
+
+th, 
+td {
+    padding: 10px;
+    border: 1px solid gray;
+}
+
+
 .buttionDiv {
     width: 92%;
-    text-align: right;
+    text-align: center;
 }
 
 .goodButton {
     margin: 10px;
-    width: 90px;
-    font-size: 20px;
-    height: 40px;
+    width: 300px;
+    font-size: 10px;
+    height: 60px;
     border-radius: 4px;
     color: white;
     background-color: #FEE500;

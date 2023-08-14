@@ -5,7 +5,7 @@
 }
 
 .inputs {
-    width: 92px;
+    width: 500px;
     padding: 8px;
     font-size: 22px;
 }
@@ -17,20 +17,22 @@
 
 .goodButton {
     margin: 10px;
-    width: 90px;
+    width: 120px;
     font-size: 20px;
+    font-weight: bold;
     height: 40px;
     border-radius: 4px;
-    color: white;
-    background-color: rebeccapurple;
+    color: black;
+    background-color: #FEE500;
 }
 
 .badButton {
     margin-top: 10px;
-    width: 90px;
+    width: 120px;
     font-size: 20px;
     height: 40px;
     border-radius: 4px;
-    color: white;
+    color: black;
+    font-weight: bold;
     background-color: red;
 }
